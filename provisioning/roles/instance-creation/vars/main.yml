@@ -1,0 +1,9 @@
+---
+# vars file for instance-creation
+instance_type: t2.medium
+sec_group_name: vivisima
+image: ami-085925f297f89fce1
+keypair: vcskey
+region: us-east-1
+count: 3
+profile: vivisima

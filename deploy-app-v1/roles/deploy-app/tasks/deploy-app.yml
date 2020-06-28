@@ -1,0 +1,30 @@
+- name: Create app Giropops dir
+  file: path={{item}} state=directory
+  with_items:
+    - /opt/giropops
+    - /opt/giropops/logs
+    - /opt/giropops/conf
+  register: create_dirs
+
+- name: Copy deployment file from app to host
+  template:
+    src: app-v1.yml.j2
+    dest: /opt/giropops/app-v1.yml
+    owner: root 
+    group: root
+    mode: 0644
+  register: copy_template
+
+- name: Copy service file from app to host
+  copy: src={{ item.src  }} dest={{ item.dest }}
+  with_items:
+    - { src: 'service_app.yml', dest: '/opt/giropops/service_app.yml' }
+  register: copy_service_file
+
+- name: Create Giropops deployment
+  shell: kubectl apply -f /opt/giropops/app-v1.yml
+  register: deploy_app
+  
+- name: Create Giropops Service
+  shell: kubectl apply -f /opt/giropops/service_app.yml
+  register: deploy_svc_app
