@@ -5,9 +5,9 @@ Project to install Kubernetes using Ansible + AWS.
 ## Project phases
 ```
 - Provisioning => Instance creation
-- Install K8s => Cluster creation, etc.
+- Install K8s => Cluster creation, add nodes.
 - Deploy_app => Deploy an example app.
-- Extra => Secret stuff.
+- Extra => Secret stuff...
 ```
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

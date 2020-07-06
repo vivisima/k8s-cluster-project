@@ -16,6 +16,8 @@
     owner: root
     group: root
     mode: 0644
+  tags:
+  - copyDeployFileV1
   register: copy_deploy_app_v1
 
 - name: Copy deploy file from app v2
@@ -25,6 +27,8 @@
     owner: root
     group: root
     mode: 0644
+  tags:
+  - copyDeployFileV2
   register: copy_deploy_app_v2
 
 - name: Deploy app-v2
@@ -33,7 +37,7 @@
     namespace: default
     src: /opt/giropops/app-v2.yml
   tags:
-  - version2
+  - deployV2
 
 - name: Scale down app-v1
   k8s:
@@ -41,13 +45,13 @@
     namespace: default
     src: /opt/giropops/app-v1.yml
   tags:
-  - down
+  - scaleDownV1
 
 - name: Removing app-v1 in 2 min. Press Ctrl + C to cancel.
   pause: 
     minutes: 2
   tags:
-  - wait
+  - pauseRemovalV1
 
 - name: Remove app-v1
   k8s:
@@ -55,6 +59,6 @@
     namespace: default
     src: /opt/giropops/app-v1.yml
   tags:
-  - removev1
+  - removeV1
 
 

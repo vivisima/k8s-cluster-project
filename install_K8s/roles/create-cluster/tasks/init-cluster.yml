@@ -1,26 +1,40 @@
 - name: Remove old cluster
   command:
     kubeadm reset --force
+  tags:
+  - removeCluster
   register: kubeadm_reset
 
 - name: Initialize k8s cluster
   command:
     kubeadm init
+  tags:
+  - initCluster
   register: kubeadm_init
 
 - name: Create .kube dir
   file:
     path: ~/.kube
     state: directory
+  tags:
+  - createKubeDir
 
 - name: Link admin.conf in ~/.kube/config
   file:
     src: /etc/kubernetes/admin.conf
     dest: ~/.kube/config
     state: link
+  tags:
+  - linkKubeConfigAtUserDir
 
 - name: Configure Weavenet pod network
+  #k8s:
+  #  state: present
+  #  definition: {{ default_url_weavenet}}
+  #  namespace: default
   shell: kubectl apply -f {{ default_url_weavenet}}
+  tags:
+  - configWeavenet
   register: weavenet_result
 
 - name: Save token to workers addition on cluster

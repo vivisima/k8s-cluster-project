@@ -101,6 +101,33 @@
     insertafter="[kubernetes]" line={{ item.public_ip }}
   with_items: "{{ ec2.instances }}"
 
+#- name: Add master private IP to next playbook
+#  local_action: lineinfile
+#    dest="../install_K8s/hosts"
+#    regexp={{ item.private_ip }}
+#    insertafter="[k8s-master]" line={{ item.private_ip[0] }}
+#  with_items: "{{ ec2.instances }}"
+#  tags:
+#  - addMasterPrivIP
+#
+#- name: Add master public IP to next playbook
+#  local_action: lineinfile
+#    dest="../install_K8s/hosts"
+#    regexp='(^K8S_MASTER_NODE_IP=.*)'
+#    line='K8S_MASTER_NODE_IP='{{ item.public_ip[0] }}
+#  with_items: "{{ ec2.instances }}"
+#  tags:
+#  - addMasterPubIP
+#
+#- name: Add worker private IPs to next playbook
+#  local_action: lineinfile
+#    dest="../install_K8s/hosts"
+#    regexp={{ item.private_ip }}
+#    insertafter="[k8s-workers]" line={{ item.private_ip }}
+#  with_items: "{{ ec2.instances }}"
+#  tags:
+#  - addWorkersPubIPs
+
 - name: Add private IP to hosts
   local_action: lineinfile
     dest="./hosts"

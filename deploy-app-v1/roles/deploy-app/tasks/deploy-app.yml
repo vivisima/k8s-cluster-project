@@ -4,6 +4,8 @@
     - /opt/giropops
     - /opt/giropops/logs
     - /opt/giropops/conf
+  tags:
+  - createGiropopsDir
   register: create_dirs
 
 - name: Copy deployment file from app to host
@@ -13,18 +15,26 @@
     owner: root 
     group: root
     mode: 0644
+  tags:
+  - copyDeploymentFile
   register: copy_template
 
 - name: Copy service file from app to host
   copy: src={{ item.src  }} dest={{ item.dest }}
   with_items:
     - { src: 'service_app.yml', dest: '/opt/giropops/service_app.yml' }
+  tags:
+  - copyServiceFile
   register: copy_service_file
 
 - name: Create Giropops deployment
   shell: kubectl apply -f /opt/giropops/app-v1.yml
+  tags:
+  - applyGiropopsDeploy
   register: deploy_app
   
 - name: Create Giropops Service
   shell: kubectl apply -f /opt/giropops/service_app.yml
+  tags:
+  - createGiropopsService
   register: deploy_svc_app
